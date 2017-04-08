@@ -2084,7 +2084,12 @@ bool TWPartition::Wipe_F2FS() {
 			command += " -r ";
 			command += len;
 		}
+#ifdef REAL_DATA_BLK
+		command += " " + REAL_DATA_BLK;
+		gui_msg(Msg("Using real block device for data partition {1}")(REAL_DATA_BLK));
+#else
 		command += " " + Actual_Block_Device;
+#endif
 		if (TWFunc::Exec_Cmd(command) == 0) {
 			Recreate_AndSec_Folder();
 			gui_msg("done=Done.");

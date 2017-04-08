@@ -46,6 +46,8 @@ else
     LOCAL_CFLAGS += -DTW_DEVICE_VERSION='"-0"'
 endif
 
+LOCAL_CFLAGS += -DREAL_DATA_BLK=$(REAL_DATA_BLK)
+
 LOCAL_SRC_FILES := \
     twrp.cpp \
     fixContexts.cpp \
