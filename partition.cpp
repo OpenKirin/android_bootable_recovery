@@ -1379,6 +1379,10 @@ bool TWPartition::Wipe(string New_File_System) {
 	if (Mount_Point == "/cache")
 		Log_Offset = 0;
 
+#ifdef REAL_DATA_BLK
+	if (Mount_Point == "/data")
+		Actual_Block_Device = REAL_DATA_BLK;
+#endif
 	if (Retain_Layout_Version && Mount(false) && TWFunc::Path_Exists(Layout_Filename))
 		TWFunc::copy_file(Layout_Filename, "/.layout_version", 0600);
 	else
@@ -2084,12 +2088,8 @@ bool TWPartition::Wipe_F2FS() {
 			command += " -r ";
 			command += len;
 		}
-#ifdef REAL_DATA_BLK
-		command += " " + REAL_DATA_BLK;
-		gui_msg(Msg("Using real block device for data partition {1}")(REAL_DATA_BLK));
-#else
+
 		command += " " + Actual_Block_Device;
-#endif
 		if (TWFunc::Exec_Cmd(command) == 0) {
 			Recreate_AndSec_Folder();
 			gui_msg("done=Done.");
